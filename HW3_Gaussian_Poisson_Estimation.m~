@@ -55,7 +55,7 @@ plot(x, prior_y2)
 title('Gamma prior plot: a=3, b=5')
 
 %% posterior
-x = 0:12;
+x = 0:10;
 a1=1; b1=2;
 post_a1 = a1 + sum(poisson);
 n = size(poisson,1);
