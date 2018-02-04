@@ -42,3 +42,15 @@ y_ML = poisspdf(x, ML_lamda);
 plot(x, y_ML)
 title('ML estimation density function plot')
 
+%% The conjugate prior for defining the Poisson distribution as Gamma distribution
+x = 0:20;
+prior_y1 = gampdf(x,1,2);
+plot(x, prior_y1)
+title('Gamma prior plot: a=1, b=2')
+
+prior_y2 = gampdf(x,3,5);
+plot(x, prior_y2)
+title('Gamma prior plot: a=3, b=5')
+
+gampdf(X,A,B)
+
