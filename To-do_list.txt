@@ -1,0 +1,3 @@
+To-do list to implement:
+stochastic-gradient-descent:
+https://machinelearningmastery.com/implement-linear-regression-stochastic-gradient-descent-scratch-python/
