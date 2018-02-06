@@ -25,6 +25,23 @@ mu_d2 = mean(d2);
 Sigma_d1= (1/49)*sum((d1 - mu_d1).^2);
 Sigma_d2= (1/49)*sum((d2 - mu_d2).^2);
 
+%% which better? mutlivariate Gaussian model or two separate univariate Gaussian models
+Prob_data = mvnpdf(gaussian, mu.', Sigma);
+
+prob_estimation = 1;%1.9465e-89
+for i = 1:size(Prob_data,1)
+    prob_estimation = prob_estimation*Prob_data(i);
+end
+
+prob_x1 = normpdf(gaussian(:,1), mu_d1, Sigma_d1);
+prob_x2 = normpdf(gaussian(:,2), mu_d2, Sigma_d2);
+prob_x1x2 = prob_x1.*prob_x2;
+
+prob_estimation_x1x2 = 1; %2.5148e-103
+for i = 1:size(prob_x1x2,1)
+    prob_estimation_x1x2 = prob_estimation_x1x2*prob_x1x2(i);
+end
+
 %% Poisson distribution
 x = 0:20;
 y_2 = poisspdf(x, 2);
