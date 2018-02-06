@@ -20,10 +20,10 @@ xlabel('x1'); ylabel('x2'); zlabel('Probability Density');
 %% separate each measurement
 d1 = x(1,:);
 d2 = x(2,:);
-mu_d1 = mean(d1)
-mu_d2 = mean(d2)
-Sigma_d1= (1/49)*sum((d1 - mu_d1).^2)
-Sigma_d2= (1/49)*sum((d2 - mu_d2).^2)
+mu_d1 = mean(d1);
+mu_d2 = mean(d2);
+Sigma_d1= (1/49)*sum((d1 - mu_d1).^2);
+Sigma_d2= (1/49)*sum((d2 - mu_d2).^2);
 
 %% Poisson distribution
 x = 0:20;
