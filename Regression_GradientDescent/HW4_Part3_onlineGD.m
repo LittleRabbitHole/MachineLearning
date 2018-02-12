@@ -13,7 +13,7 @@ data_test = housing_test;
 [test_mean_norm test_std_norm]=compute_norm_parameters(data_test);
 [data_test_norm]=normalize(data_test,test_mean_norm,test_std_norm);
 
-%% online gradient descent
+%% online gradient descent on normalized data
 W = zeros(1, size(data_train_norm, 2));
 for step = 0:1000
     %step=0;
@@ -50,3 +50,20 @@ m = length( X_test);             % number of points
 X = [ones(m,1),  X_test];
 Y_test_hat = X * W.';
 MSR_test = mean((Y_test - Y_test_hat).^2)
+
+%% online gradient descent on original data
+W = zeros(1, size(data_train, 2));
+for step = 0:72
+    %step=0;
+    ind_data = mod(step, size(data_train, 1))+1;
+    newdata = data_train(ind_data,:);
+    X_newdata = [1, newdata(:,1:(m_train-1))];
+    Y_newdata = newdata(:,m_train);
+    %learning rate
+    alpha = 2/(step+1);
+    %gradient
+    dw = (Y_newdata - W*X_newdata.')*X_newdata
+    %update
+    W = W + alpha*dw
+end
+
