@@ -1,0 +1,47 @@
+load housing_train.txt;
+load housing_test.txt;
+
+data_train = housing_train;
+data_test = housing_test;
+
+%% prepare the train data
+% normalization on training data
+[mean_norm std_norm]=compute_norm_parameters(data_train);
+[data_train_norm]=normalize(data_train,mean_norm,std_norm);
+
+
+%% online gradient descent
+W = zeros(1, size(data_train_norm, 2));
+for step = 0:1000
+    %step=0;
+    ind_data = mod(step, size(data_train_norm, 1))+1;
+    newdata = data_train_norm(ind_data,:);
+    X_newdata = [1, newdata(:,1:(m_train-1))];
+    Y_newdata = newdata(:,m_train);
+    %learning rate
+    alpha = 2/(step+1);
+    %gradient
+    dw = (Y_newdata - W*X_newdata.')*X_newdata;
+    %update
+    W = W + alpha*dw;
+end
+
+%% training error
+m_train = size(data_train_norm, 2);
+X_train = data_train_norm(:,1:(m_train-1));
+Y_train = data_train_norm(:,m_train);
+
+%error on training
+m = length( X_train);             % number of points
+X = [ones(m,1),  X_train];
+Y_train_hat = X * W.';
+MSR_train = mean((Y_train - Y_train_hat).^2)
+
+%% prepare the test data
+% normalization on training data
+[testmean_norm teststd_norm]=compute_norm_parameters(data_test);
+[data_test_norm]=normalize(data_test,testmean_norm,std_norm);
+
+m_test = size(data_test, 2);
+X_test = data_test(:,1:(m_test-1));
+Y_test = data_test(:,m_test);

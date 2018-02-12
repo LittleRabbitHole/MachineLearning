@@ -1,4 +1,4 @@
-%% prob 1 housing.txt
+%% prob 1 housing.txt regression using normal equation
 load housing.txt
 features = housing(:, 1:13);
 prices = housing(:, 14);
@@ -23,14 +23,22 @@ ylabel('Median Price')
 % correlation matrix
 corr_mat = corrcoef(housing);
 
-%% optimization
+%% optimization and find the coefficient
 load housing_train.txt
-X_train = housing_train;
+X_train = housing_train(:,1:13);
+Y_train = housing_train(:,14);
 
-W = 
+W = LR_solve( X_train,  Y_train);
 
+%% prediction
+load housing_test.txt
+X_test = housing_test(:,1:13);
+Y_test = housing_test(:,14);
 
+Y_hat = LR_predict ( X_test, W );
 
+%% MSR on training/test 
+main4_2
 
 
 
