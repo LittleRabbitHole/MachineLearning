@@ -15,10 +15,29 @@ scatter(features(:,6), prices)
 xlabel('V6: RM')
 ylabel('Median Price')
 
-%% non-linear
+% non-linear
 scatter(features(:,13), prices)
 xlabel('V13: LSTAT')
 ylabel('Median Price')
 
-%% correlation matrix
+% correlation matrix
+corr_mat = corrcoef(housing);
+
+%% optimization and find the coefficient
+load housing_train.txt
+X_train = housing_train(:,1:13);
+Y_train = housing_train(:,14);
+
+W = LR_solve( X_train,  Y_train);
+
+%% prediction
+load housing_test.txt
+X_test = housing_test(:,1:13);
+Y_test = housing_test(:,14);
+
+Y_hat = LR_predict ( X_test, W );
+
+%% MSR on training/test 
+main4_2
+
 
