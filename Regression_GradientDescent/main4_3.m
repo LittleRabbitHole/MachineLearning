@@ -14,6 +14,7 @@ data_test = housing_test;
 [data_test_norm]=normalize(data_test,test_mean_norm,test_std_norm);
 
 %% online gradient descent on normalized data
+m_train = size(data_train_norm, 2);
 W = zeros(1, size(data_train_norm, 2));
 for step = 0:1000
     %step=0;

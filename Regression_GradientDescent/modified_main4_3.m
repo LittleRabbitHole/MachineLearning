@@ -24,13 +24,15 @@ Y_test = data_test_norm(:,m_test);
 %% online gradient descent on normalized data
 W = zeros(1, size(data_train_norm, 2));
 pgraph = init_progress_graph
-for step = 0:1000
+for step = 0:1500
     %step=0;
     ind_data = mod(step, size(data_train_norm, 1))+1;
     newdata = data_train_norm(ind_data,:);
     X_newdata = [1, newdata(:,1:(m_train-1))];
     Y_newdata = newdata(:,m_train);
     %learning rate
+    %alpha = 2/sqrt(step+1);
+    %alpha = 0.01;
     alpha = 2/(step+1);
     %gradient
     dw = (Y_newdata - W*X_newdata.')*X_newdata;
