@@ -15,8 +15,8 @@ plot(pgraph.step,pgraph.train,'-b');
 hold on;
 plot(pgraph.step,pgraph.test,'--r');
 xlabel('Step');
-ylabel('Mean squared error');
-title('(Progress of mean errors)') %title
+ylabel('Error');
+title('(Progress of errors)') %title
 legend('Train set','Test set') %label of the graph
 pause(pgraph.pause);
 hold off;
