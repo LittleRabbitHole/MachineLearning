@@ -1,0 +1,53 @@
+load pima_train_norm.txt
+load pima_test_norm.txt
+
+m_train = size(pima_train_norm, 2);
+X_train = pima_train_norm(:,1:(m_train-1));
+Y_train = pima_train_norm(:,m_train);
+
+m_test = size(pima_test_norm, 2);
+X_test = pima_test_norm(:,1:(m_test-1));
+Y_test = pima_test_norm(:,m_test);
+
+
+%% iterative learning graph
+
+col_ones1 = ones(size(X_train, 1), 1);
+X_train = horzcat(col_ones1, X_train);           % add a column of ones on the left to X
+
+col_ones2 = ones(size(X_test, 1), 1);
+X_test = horzcat(col_ones2, X_test);           % add a column of ones on the left to X
+
+W = ones(size(X_train, 2), 1);            % initialize W to 1 to start with 
+
+pgraph = init_progress_graph
+
+for k = 1:1:2000                       %%% number of steps
+    sum_err = 0;                    %%% initialize batch error function gradient
+    for row = 1:1:size(X_train, 1)
+        x = X_train(row,:)';
+        y = Y_train(row,:);
+        f = 1/(1 + exp(-(W'*x)));
+        err = (y - f) * x;          % error (on-line gradient)
+        sum_err = sum_err + err;    % update batch error function gradient
+    end
+    alpha = 2/sqrt(k);
+    W = W + (alpha * sum_err);
+    
+    % calculate training error
+    Y_train_hat = 1./(1 + exp(-(W'*X_train'))); %element wise
+    Y_trainclass_hat = [Y_train_hat>=0.5];
+    conf_mat = crosstab(Y_trainclass_hat, Y_train);
+    accua;
+    traine = MSR_train_step;
+    
+    % calculate testing error
+    Y_test_hat = 1./(1 + exp(-(W'*X_test')));
+    MSR_test_step = mean((Y_test - Y_test_hat').^2);
+    teste = MSR_test_step;
+
+    % graph
+    if mod(k, 50) == 0
+        pgraph = add_to_progress_graph(pgraph, k, traine, teste)
+    end
+end
