@@ -85,5 +85,3 @@ exp_1_8_muci
 %%% p(x_6|y=1,mu_1_6,sigma_1_6)
 [norm_1_6_mu,norm_1_6_sigma,muci_1_6,sci_1_6] = normfit(class_1(:,6));
 
-%% prediction
-

@@ -11,17 +11,19 @@ p_y_0 = 1 - (sum(data_train(:,9))/length(data_train(:,9)));
 
 %% for trainning set
 Y_train_predict = [];
+Y_train_nbscores = [];
 for i =1:length(data_train)
     x = data_train(i, :);
-    y_hat = predict_NB(x);
-    Y_train_predict = [Y_train_predict, y_hat];    
+    [y_hat, y_prob] = predict_NB(x);
+    Y_train_predict = [Y_train_predict, y_hat];
+    Y_train_nbscores = [Y_train_nbscores, y_prob];
 end
 
 Y_train_class = data_train(:,9);
 Y_train_predict = Y_train_predict';
 
 %% training confusion matrix
-conf_mat_train = confusionmat(Y_train_class,Y_train_predict,'order',[1,0]);
+conf_mat_train = confusionmat(Y_train_class,Y_train_predict,'order',[1,0])
 
 TP = conf_mat_train(1,1);
 TN = conf_mat_train(2,2);
@@ -32,10 +34,12 @@ misclass_train = 1-accuracy_train
 
 %% for testing set
 Y_test_predict = [];
+Y_test_nbscores = [];
 for i =1:length(data_test)
     x = data_train(i, :);
-    y_hat = predict_NB(x);
-    Y_test_predict = [Y_test_predict, y_hat];    
+    [y_hat, y_prob] = predict_NB(x);
+    Y_test_predict = [Y_test_predict, y_hat];  
+    Y_test_nbscores = [Y_test_nbscores, y_prob];
 end
 Y_test_class = data_test(:,9);
 Y_test_predict = Y_test_predict';
@@ -49,4 +53,5 @@ FN = conf_mat_test(2,1);
 FP = conf_mat_test(1,2);
 accuracy_test = (TP+TN)/sum(sum(conf_mat_test));
 misclass_test = 1-accuracy_test
-
+test_sensit = TP/(TP+FN)
+test_specif = TN/(TN+FP)

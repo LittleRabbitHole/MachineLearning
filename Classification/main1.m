@@ -15,14 +15,14 @@ Y_test = pima_test_norm(:,m_test);
 col_ones1 = ones(size(X_train, 1), 1);
 X_train = horzcat(col_ones1, X_train);           % add a column of ones on the left to X
 W = ones(size(X_train, 2), 1);            % initialize W to 1 to start with 
-%W = zeros(size(X_train, 2), 1);            % initialize W to 0 to start with 
+%W = 0* ones(size(X_train, 2), 1);            % initialize W to 0 to start with 
 
 col_ones2 = ones(size(X_test, 1), 1);
 X_test = horzcat(col_ones2, X_test);           % add a column of ones on the left to X
 
 pgraph = init_progress_graph
 
-for k = 1:1:2000                       %%% number of steps
+for k = 1:1:5000                       %%% number of steps
     sum_err = 0;                    %%% initialize batch error function gradient
     for row = 1:1:size(X_train, 1)
         x = X_train(row,:)';
@@ -69,3 +69,4 @@ accuracy_test = (TP+TN)/sum(sum(conf_mat_test));
 misclass_test = 1-accuracy_test
 test_sensit = TP/(TP+FN)
 test_specif = TN/(TN+FP)
+

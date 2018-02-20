@@ -1,4 +1,4 @@
-function [yhat] = predict_NB( x )
+function [yhat, y_prob] = predict_NB( x )
 %predict NB predict based on the attribute distribution
 exp_0_1_muhat = 3.2419; exp_1_1_muhat = 4.7100;
 exp_0_5_muhat = 67.7168; exp_1_5_muhat = 103.7200;
@@ -16,9 +16,12 @@ norm_1_6_mu = 35.2580; norm_1_6_sigma = 7.3286;
 
 p_y_1 = 0.3711; p_y_0 = 0.6289;
 
-pred_0 = (log(exppdf(x(1), exp_0_1_muhat))+ log(exppdf(x(5), exp_0_5_muhat)) + log(exppdf(x(7), exp_0_7_muhat)) + log(exppdf(x(8), exp_0_8_muhat)) + log(normpdf(x(2),norm_0_2_mu,norm_0_2_sigma)) + log(normpdf(x(3),norm_0_3_mu,norm_0_3_sigma))+ log(normpdf(x(4),norm_0_4_mu,norm_0_4_sigma)) + log(normpdf(x(6),norm_0_6_mu,norm_0_6_sigma)))+ log(p_y_0);
-pred_1 = (log(exppdf(x(1), exp_1_1_muhat))+ log(exppdf(x(5), exp_1_5_muhat)) + log(exppdf(x(7), exp_1_7_muhat)) + log(exppdf(x(8), exp_1_8_muhat)) + log(normpdf(x(2),norm_1_2_mu,norm_1_2_sigma)) + log(normpdf(x(3),norm_1_3_mu,norm_1_3_sigma))+ log(normpdf(x(4),norm_1_4_mu,norm_1_4_sigma)) + log(normpdf(x(6),norm_1_6_mu,norm_1_6_sigma)))+ log(p_y_1);
+log_pred_0 = (log(exppdf(x(1), exp_0_1_muhat))+ log(exppdf(x(5), exp_0_5_muhat)) + log(exppdf(x(7), exp_0_7_muhat)) + log(exppdf(x(8), exp_0_8_muhat)) + log(normpdf(x(2),norm_0_2_mu,norm_0_2_sigma)) + log(normpdf(x(3),norm_0_3_mu,norm_0_3_sigma))+ log(normpdf(x(4),norm_0_4_mu,norm_0_4_sigma)) + log(normpdf(x(6),norm_0_6_mu,norm_0_6_sigma)))+ log(p_y_0);
+log_pred_1 = (log(exppdf(x(1), exp_1_1_muhat))+ log(exppdf(x(5), exp_1_5_muhat)) + log(exppdf(x(7), exp_1_7_muhat)) + log(exppdf(x(8), exp_1_8_muhat)) + log(normpdf(x(2),norm_1_2_mu,norm_1_2_sigma)) + log(normpdf(x(3),norm_1_3_mu,norm_1_3_sigma))+ log(normpdf(x(4),norm_1_4_mu,norm_1_4_sigma)) + log(normpdf(x(6),norm_1_6_mu,norm_1_6_sigma)))+ log(p_y_1);
+yhat = log_pred_1>log_pred_0;
 
-yhat = pred_1>pred_0;
+y_prob_1 = (exppdf(x(1), exp_1_1_muhat)*exppdf(x(5), exp_1_5_muhat)*exppdf(x(7), exp_1_7_muhat)*exppdf(x(8), exp_1_8_muhat)*normpdf(x(2),norm_1_2_mu,norm_1_2_sigma)*normpdf(x(3),norm_1_3_mu,norm_1_3_sigma)*normpdf(x(4),norm_1_4_mu,norm_1_4_sigma)*normpdf(x(6),norm_1_6_mu,norm_1_6_sigma))*(p_y_1);
+y_prob_0 = (exppdf(x(1), exp_0_1_muhat)*exppdf(x(5), exp_0_5_muhat)*exppdf(x(7), exp_0_7_muhat)*exppdf(x(8), exp_0_8_muhat)*normpdf(x(2),norm_0_2_mu,norm_0_2_sigma)*normpdf(x(3),norm_0_3_mu,norm_0_3_sigma)*normpdf(x(4),norm_0_4_mu,norm_0_4_sigma)*normpdf(x(6),norm_1_6_mu,norm_0_6_sigma))*(p_y_0);
+y_prob = y_prob_1/(y_prob_1+y_prob_0);
 end
 
