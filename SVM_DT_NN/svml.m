@@ -8,7 +8,7 @@ function [w, b] = svml(X,Y_in,cost)
 
 %%% convert 0 1 class labels to -1 +1 labels
 Y=2*Y_in - ones(size(Y_in,1),1);
-D=diag(Y);;
+D=diag(Y);
 A=X;
 nu=cost;
 %% itmax
