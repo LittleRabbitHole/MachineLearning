@@ -32,9 +32,9 @@ view(net)
 
 %% sets the parameters of the NN model
 % see the NN toolbox documentation help(net.trainFcn)
-net.trainParam.epochs = 20000;
+net.trainParam.epochs = 2000; %20000
 net.trainParam.show = 10;
-net.trainParam.max_fail=10000;
+net.trainParam.max_fail=50; %10000
 %%% use conjugate gradient to train the model
 net.trainFcn='traincgf';
 % net.trainFcn= 'trainscg';
