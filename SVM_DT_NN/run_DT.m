@@ -5,10 +5,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%% load the train and test data (both are normalized)
-load pima_train.txt;
-load pima_test.txt;
-tr_data = pima_train;
-test_data = pima_test;
+load pima_train_norm.txt;
+load pima_test_norm.txt;
+tr_data = pima_train_norm;
+test_data = pima_test_norm;
 
 data_col= size(tr_data,2)
 n_features = data_col - 1;

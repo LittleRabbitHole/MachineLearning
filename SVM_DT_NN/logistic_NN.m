@@ -6,10 +6,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%% load the train and test data (both are normalized)
-load pima_train.txt;
-load pima_test.txt;
-tr_data = pima_train;
-test_data = pima_test;
+load pima_train_norm.txt;
+load pima_test_norm.txt;
+tr_data = pima_train_norm;
+test_data = pima_test_norm;
 
 data_col= size(tr_data,2);
 n_features = data_col - 1;
@@ -32,9 +32,9 @@ view(net)
 
 %% sets the parameters of the NN model
 % see the NN toolbox documentation help(net.trainFcn)
-net.trainParam.epochs = 5000;
+net.trainParam.epochs = 20000;
 net.trainParam.show = 10;
-net.trainParam.max_fail=15;
+net.trainParam.max_fail=10000;
 %%% use conjugate gradient to train the model
 net.trainFcn='traincgf';
 % net.trainFcn= 'trainscg';
