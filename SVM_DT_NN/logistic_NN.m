@@ -24,18 +24,21 @@ x_test = test_data(:,1:n_features);
 %% builds y vector for the test set
 y_test=test_data(:,data_col);
 
-%%% builds a one layer neural network (no hidden units) with a sigmoidal output function
+%% builds a one layer neural network (no hidden units) 
+%%% with a sigmoidal output function
 %%% to be trained with the gradient method
 net=patternnet([]);
 view(net)
 
 %% sets the parameters of the NN model
-%% see the NN toolbox documentation
-net.trainParam.epochs = 2000;
+% see the NN toolbox documentation help(net.trainFcn)
+net.trainParam.epochs = 5000;
 net.trainParam.show = 10;
-net.trainParam.max_fail=5;
+net.trainParam.max_fail=15;
 %%% use conjugate gradient to train the model
 net.trainFcn='traincgf';
+% net.trainFcn= 'trainscg';
+
 
 %%% training of the neural net
 [net, tr] = train(net,x',y') 
@@ -55,7 +58,7 @@ class_error_test=sum(abs(y_test-round(res_test)'))/size(res_test,2)
 %%% 'Mean squared error (mse) on the testing data'
 mse_error_test = perform(net,y_test',res_test)
 
-%%% weights
+%% weights
 cell2mat(net.IW)
 %%% bias
 cell2mat(net.b)

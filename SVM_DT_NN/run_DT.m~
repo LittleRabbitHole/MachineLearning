@@ -61,9 +61,7 @@ y_pred=predict(new_tree,x_test);
 error= sum(abs(y_pred-y_test))/size(y_test,1)
 
 %% part b
-%new2_tree=fitctree(x,y,'MaxNumSplits',25, 'MinParentSize',20,'MinLeafSize',2,'splitcriterion','gdi', 'PruneCriterion', 'impurity');
-%new2_tree=fitctree(x,y,'MaxNumSplits',25, 'MinParentSize',20,'MinLeafSize',15,'splitcriterion','gdi', 'PruneCriterion', 'impurity');
-new2_tree=fitctree(x,y,'MaxNumSplits',25, 'MinParentSize',20,'MinLeafSize',15,'splitcriterion','deviance', 'PruneCriterion', 'impurity');
+new2_tree=fitctree(x,y,'MaxNumSplits',25, 'MinParentSize',20,'MinLeafSize',10,'splitcriterion','gdi', 'PruneCriterion', 'impurity');
 %%% show the tree logic
 view(new2_tree);
 %%% show the graphics of the tree
