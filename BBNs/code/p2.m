@@ -28,3 +28,50 @@ p_PalF_PT = 1 - p_PalT_PT;
 p_PalT_PF =  size(data_pf(data_pf(:,2)==1,:),1)/size(data_pf,1); 
 %P(Palen=F|Pneumonia = F)
 p_PalF_PF = 1 - p_PalT_PF;
+
+%% Cough
+%P(C=T|Pneumonia = T)
+p_CT_PT =  size(data_pt(data_pt(:,3)==1,:),1)/size(data_pt,1); 
+%P(C=F|Pneumonia = T)
+p_CF_PT = 1 - p_CT_PT;
+%P(C=T|Pneumonia = F)
+p_CT_PF =  size(data_pf(data_pf(:,3)==1,:),1)/size(data_pf,1); 
+%P(C=F|Pneumonia = F)
+p_CF_PF = 1 - p_CT_PF;
+
+%% HighWBCCount
+%P(W=T|Pneumonia = T)
+p_WT_PT =  size(data_pt(data_pt(:,4)==1,:),1)/size(data_pt,1); 
+%P(W=F|Pneumonia = T)
+p_WF_PT = 1 - p_WT_PT;
+%P(W=T|Pneumonia = F)
+p_WT_PF =  size(data_pf(data_pf(:,4)==1,:),1)/size(data_pf,1); 
+%P(W=F|Pneumonia = F)
+p_WF_PF = 1 - p_WT_PF;
+
+%% 
+%c = containers.Map;
+%c('Pneumonia') = [p_pt, 1-p_pt];
+example = [1, 0, -1, 0]
+
+para_f = []
+if example(1) == 1
+    para_f = [p_FT_PT, p_FT_PF];
+elseif example(1) == 0
+    
+    
+end    
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
