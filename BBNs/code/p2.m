@@ -48,19 +48,7 @@ p_WF_PT = 1 - p_WT_PT;
 p_WT_PF =  size(data_pf(data_pf(:,4)==1,:),1)/size(data_pf,1); 
 %P(W=F|Pneumonia = F)
 p_WF_PF = 1 - p_WT_PF;
-
-%% 
-%c = containers.Map;
-%c('Pneumonia') = [p_pt, 1-p_pt];
-example = [1, 0, -1, 0]
-
-para_f = []
-if example(1) == 1
-    para_f = [p_FT_PT, p_FT_PF];
-elseif example(1) == 0
-    
-    
-end    
+  
 
        
 

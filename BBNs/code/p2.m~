@@ -1,9 +1,0 @@
-%%%% load the train and test data (both are normalized)
-load pneumonia.tex;
-
-%% learn para
-p_pt = sum(pneumonia(:,5))/size(pneumonia,1);
-data_pt = pneumonia(pneumonia(:,5)==1,:);
-data_pt = pneumonia(pneumonia(:,5)==1,:);
-
-p_f_pt =  pneumonia(ind1,:); %P(Fever|Pneumonia = T)
