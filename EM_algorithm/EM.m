@@ -16,26 +16,26 @@ p_x1k4 =  size(tr_data(tr_data(:,1)==4,:),1)/(size(tr_data,1) - size(tr_data(tr_
 p_x1k5 =  size(tr_data(tr_data(:,1)==5,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,1)==0,:),1));
 p_x1k = [p_x1k1, p_x1k2, p_x1k3, p_x1k4, p_x1k5];
 
-%% p(x2 =k)3
+% p(x2 =k)3
 p_x2k1 =  size(tr_data(tr_data(:,2)==1,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,2)==0,:),1));
 p_x2k2 =  size(tr_data(tr_data(:,2)==2,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,2)==0,:),1));
 p_x2k3 =  size(tr_data(tr_data(:,2)==3,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,2)==0,:),1));
 p_x2k = [p_x2k1, p_x2k2, p_x2k3];
 
-%% p(x3 =k)3
+% p(x3 =k)3
 p_x3k1 =  size(tr_data(tr_data(:,3)==1,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,3)==0,:),1));
 p_x3k2 =  size(tr_data(tr_data(:,3)==2,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,3)==0,:),1));
 p_x3k3 =  size(tr_data(tr_data(:,3)==3,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,3)==0,:),1));
 p_x3k = [p_x3k1, p_x3k2, p_x3k3];
 
-%% p(x4 =k)4
+% p(x4 =k)4
 p_x4k1 =  size(tr_data(tr_data(:,4)==1,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,4)==0,:),1));
 p_x4k2 =  size(tr_data(tr_data(:,4)==2,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,4)==0,:),1));
 p_x4k3 =  size(tr_data(tr_data(:,4)==3,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,4)==0,:),1));
 p_x4k4 =  size(tr_data(tr_data(:,4)==4,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,4)==0,:),1));
 p_x4k = [p_x4k1, p_x4k2, p_x4k3, p_x4k4];
 
-%% p(x5 =k)5
+% p(x5 =k)5
 p_x5k1 =  size(tr_data(tr_data(:,5)==1,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,5)==0,:),1));
 p_x5k2 =  size(tr_data(tr_data(:,5)==2,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,5)==0,:),1));
 p_x5k3 =  size(tr_data(tr_data(:,5)==3,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,5)==0,:),1));
@@ -43,14 +43,14 @@ p_x5k4 =  size(tr_data(tr_data(:,5)==4,:),1)/(size(tr_data,1) - size(tr_data(tr_
 p_x5k5 =  size(tr_data(tr_data(:,5)==5,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,5)==0,:),1));
 p_x5k = [p_x5k1, p_x5k2, p_x5k3, p_x5k4, p_x5k5];
 
-%% p(x6 =k)4
+% p(x6 =k)4
 p_x6k1 =  size(tr_data(tr_data(:,6)==1,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,6)==0,:),1));
 p_x6k2 =  size(tr_data(tr_data(:,6)==2,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,6)==0,:),1));
 p_x6k3 =  size(tr_data(tr_data(:,6)==3,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,6)==0,:),1));
 p_x6k4 =  size(tr_data(tr_data(:,6)==4,:),1)/(size(tr_data,1) - size(tr_data(tr_data(:,6)==0,:),1));
 p_x6k = [p_x6k1, p_x6k2, p_x6k3, p_x6k4];
 
-%%
+%
 p_xk = cell(1,6);
 p_xk{1} = p_x1k;
 p_xk{2} = p_x2k;
@@ -133,7 +133,7 @@ theta_x6 = [t6_11,    t6_12,    t6_13,    1-t6_11-t6_12-t6_13;
             t6_31,    t6_32,    t6_33,    1-t6_31-t6_32-t6_33;
             t6_41,    t6_42,    t6_43,    1-t6_41-t6_42-t6_43];
 
-%%
+%
 theta_xi = cell(1,6);
 theta_xi{1} = theta_x1;
 theta_xi{2} = theta_x2;
@@ -142,3 +142,26 @@ theta_xi{4} = theta_x4;
 theta_xi{5} = theta_x5;
 theta_xi{6} = theta_x6;
 % index: theta_xi{xi} = [k, xi]
+
+%%
+delta = 100;
+deltas = [];
+thetas0 = [];
+thetas1 = [];
+[ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
+ite = 200;
+
+while ite > 1
+%while delta >= 0.01 
+    %[ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
+    ite = ite - 1;
+    p_y =  N_cj_new
+    theta_xi = N_cjik_new;
+    [ N_cj_new, N_cjik_new, Q_theta1 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
+    thetas1 = [thetas1, Q_theta1];
+    delta = abs(Q_theta1 -  Q_theta0);
+    deltas = [deltas, delta];
+    Q_theta0 = Q_theta1;
+    thetas0 = [thetas0, Q_theta0];
+end
+
