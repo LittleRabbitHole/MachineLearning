@@ -151,17 +151,82 @@ thetas1 = [];
 [ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
 ite = 200;
 
-while ite > 1
-%while delta >= 0.01 
+%while ite > 1
+while delta >= 0.001 
     %[ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
     ite = ite - 1;
     p_y =  N_cj_new
     theta_xi = N_cjik_new;
     [ N_cj_new, N_cjik_new, Q_theta1 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
     thetas1 = [thetas1, Q_theta1];
-    delta = abs(Q_theta1 -  Q_theta0);
+    delta = abs(Q_theta1 -  Q_theta0)
     deltas = [deltas, delta];
     Q_theta0 = Q_theta1;
     thetas0 = [thetas0, Q_theta0];
 end
 
+N_cj_new
+N_cjik_new
+
+%%
+x6s =[];
+x6theta = N_cjik_new{6};
+
+for l = 1:size(test_data,1)
+    d1_y = test_data(l,6);
+    x6theta = N_cjik_new{6}(:, d1_y);
+
+    d1 = test_data(1,1:5);
+    for d_xi = 1:size(d1,2) %d_xi = 1,2,3,4,5,6 as index of x dimension
+        k_xi = d1(1, d_xi); %k_xi = d1(1), d1(2), d1(3), d1(4), d1(5), d1(6)
+        if k_xi > 0
+            c1_theta_xid1 = [c1_theta_xid1,N_cjik_new{d_xi}(1, k_xi)]; %class 1 for xi: theta_xi(c, k, xi)
+            c2_theta_xid1 = [c2_theta_xid1,N_cjik_new{d_xi}(2, k_xi)]; %class 2
+            c3_theta_xid1 = [c3_theta_xid1,N_cjik_new{d_xi}(3, k_xi)];
+            c4_theta_xid1 = [c4_theta_xid1,N_cjik_new{d_xi}(4, k_xi)];
+        else
+            c1_theta_xid1 = [c1_theta_xid1,1];
+            c2_theta_xid1 = [c2_theta_xid1,1];
+            c3_theta_xid1 = [c3_theta_xid1,1];
+            c4_theta_xid1 = [c4_theta_xid1,1];       
+
+        end
+    end    
+    % Ej
+    all_cj = [p_y(1)*prod(c1_theta_xid1), p_y(2)*prod(c2_theta_xid1), p_y(3)*prod(c3_theta_xid1), p_y(1)*prod(c4_theta_xid1)];
+    sump_cj = sum(all_cj);
+    p_c1_dthata = N_cj_new(1)*prod(c1_theta_xid1)/sump_cj;
+    p_c2_dthata = N_cj_new(2)*prod(c2_theta_xid1)/sump_cj;
+    p_c3_dthata = N_cj_new(3)*prod(c3_theta_xid1)/sump_cj;
+    p_c4_dthata = N_cj_new(4)*prod(c4_theta_xid1)/sump_cj;
+    p_cj_dthata = [p_c1_dthata, p_c2_dthata, p_c3_dthata, p_c4_dthata];
+
+    %second half
+    dtheta = []; %(5features, 4classes)
+    for d_xi = 1:size(d1,2) %d_xi = 1,2,3,4,5,6 as index of x dimension
+        %E_ijk{d_xi} = cat(3, []);%,zeros(N, 4),zeros(N, 4),zeros(N, 4),zeros(N, 4),zeros(N, 4)); %{xi} = [ndata*nclass for k=1],[k=2],[c3],[c4]
+        %e_ijk_dxi = [];
+        k_xi = d1(1, d_xi); %k_xi = d1(1), d1(2), d1(3), d1(4), d1(5), d1(6)
+        if k_xi ~= 0
+            dtheta_ijk = N_cjik_new{d_xi}(:, k_xi)';
+            %E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
+        else % if missing, expect the k   
+            e_ijk = p_cj_dthata;
+            ek_xi = find(e_ijk == max(e_ijk(:)));
+            dtheta_ijk = N_cjik_new{d_xi}(:, ek_xi)';
+        end
+        dtheta = [dtheta; dtheta_ijk];
+    end 
+
+
+    p1 = sum(x6theta(1,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
+    p2 = sum(x6theta(2,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
+    p2 = sum(x6theta(3,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
+    p3 = sum(x6theta(4,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
+    p = [p1,p2,p3,p4];
+    x6 = find(p == max(p(:)));
+    x6s = [x6s, x6];
+end
+
+%%
+crosstab(x6s', test_data(:,6))

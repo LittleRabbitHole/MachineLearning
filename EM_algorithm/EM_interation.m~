@@ -39,7 +39,7 @@ for l = 1:size(tr_data,1)
        end
     end    
     % Ej
-    all_cj = [p_y(1)*prod(c1_theta_xid1), p_y(2)*prod(c2_theta_xid1), p_y(3)*prod(c3_theta_xid1), p_y(1)*prod(c4_theta_xid1)];
+    all_cj = [p_y(1)*prod(c1_theta_xid1), p_y(2)*prod(c2_theta_xid1), p_y(3)*prod(c3_theta_xid1), p_y(1)*prod(c4_theta_xid1);
     sump_cj = sum(all_cj);
     p_c1_dthata = p_y(1)*prod(c1_theta_xid1)/sump_cj;
     p_c2_dthata = p_y(2)*prod(c2_theta_xid1)/sump_cj;
@@ -60,8 +60,7 @@ for l = 1:size(tr_data,1)
                 e_ijk = p_cj_dthata;
                 E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
             elseif k_xi == 0   
-                p_k_cd = sum((p_xk{d_xi}(ki_xi))*(all_cj))/(sum(p_xk{d_xi}*(sump_cj)));
-                %p_k_cd = (p_xk{d_xi}(ki_xi))*(sump_cj)/(sum(p_xk{d_xi}*(sump_cj)));
+                p_k_cd = (p_xk{d_xi}(ki_xi))*(sump_cj)/(sum(p_xk{d_xi}*(sump_cj)));
                 e_ijk = p_cj_dthata*p_k_cd;
                 E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
             else
