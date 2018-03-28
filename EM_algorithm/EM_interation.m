@@ -1,4 +1,4 @@
-function [ N_cj_new, N_cjik_new, Q_theta ] = EM_interation( p_xk, p_y, theta_xi, tr_data )
+function [ N_cj_new, N_cjik_new, Q_theta ] = EM_interation( p_y, theta_xi, tr_data )
 % p(c_l = j | D_l, theta') = p(c_l = j, D_l, theta')/sum(p(c_l = 1-j, D_l, theta'))
 % d1 = tr_data(1,:); %[k_x1, k_x2, ..., k_x6]
 k_max = [5,3,3,4,5,4];
@@ -61,10 +61,18 @@ for l = 1:size(tr_data,1)
                 rest = 1:k_max(d_xi);
                 rest(ki_xi) = [];
                 p_k_cdA = p_y.* c_theta_xid1(:, ki_xi)' .* prod(c_theta_xid1(:, rest),2)';
-                p_k_cdB = 
-                %p_k_cd = (p_xk{d_xi}(ki_xi))*(all_cj)./((sum(p_xk{d_xi}))*(all_cj));
-                %p_k_cd = sum((p_xk{d_xi}(ki_xi))*(all_cj))/(sum(p_xk{d_xi}*(sump_cj)));
-                %p_k_cd = (p_xk{d_xi}(ki_xi))*(sump_cj)/(sum(p_xk{d_xi}*(sump_cj)));
+                p_k_cdB1 = [];
+                for j = 1:k_max(d_xi)
+                    j_rest = 1:k_max(d_xi);
+                    j_rest(j) = [];
+                    p_k_cdB1 = [p_k_cdB1 ; theta_xi{d_xi}(:, j)' .* prod(c_theta_xid1(:, j_rest),2)'];
+                    %p_k_cd = (p_xk{d_xi}(ki_xi))*(all_cj)./((sum(p_xk{d_xi}))*(all_cj));
+                    %p_k_cd = sum((p_xk{d_xi}(ki_xi))*(all_cj))/(sum(p_xk{d_xi}*(sump_cj)));
+                    %p_k_cd = (p_xk{d_xi}(ki_xi))*(sump_cj)/(sum(p_xk{d_xi}*(sump_cj)));
+                end
+                p_k_cdB1 = sum(p_k_cdB1, 1);
+                p_k_cdB = p_y.*p_k_cdB1;
+                p_k_cd = p_k_cdA./p_k_cdB;
                 e_ijk = p_cj_dthata.*p_k_cd;
                 E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
             else

@@ -151,8 +151,8 @@ thetas1 = [];
 [ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
 ite = 200;
 
-while ite > 1
-%while delta >= 0.01 
+%while ite > 1
+while delta >= 0.01 
     %[ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
     ite = ite - 1;
     p_y =  N_cj_new
@@ -171,12 +171,13 @@ N_cjik_new
 %%
 x6s =[];
 x6theta = N_cjik_new{6};
+ps = [];
 
 for l = 1:size(test_data,1)
-    d1_y = test_data(l,6);
-    x6theta = N_cjik_new{6}(:, d1_y);
+    %d1_y = test_data(l,6);
+    %x6theta = N_cjik_new{6}(:, d1_y);
 
-    d1 = test_data(1,1:5);
+    d1 = test_data(l,1:5);
     for d_xi = 1:size(d1,2) %d_xi = 1,2,3,4,5,6 as index of x dimension
         k_xi = d1(1, d_xi); %k_xi = d1(1), d1(2), d1(3), d1(4), d1(5), d1(6)
         if k_xi > 0
@@ -217,16 +218,20 @@ for l = 1:size(test_data,1)
         end
         dtheta = [dtheta; dtheta_ijk];
     end 
-
-
-    p1 = sum(x6theta(1,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
-    p2 = sum(x6theta(2,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
-    p2 = sum(x6theta(3,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
-    p3 = sum(x6theta(4,:)*sum(prod(dtheta,1)))/sum(sum(x6theta*sum(prod(dtheta,1))));
-    p = [p1,p2,p3,p4];
+    %N_cj_new
+    %N_cjik_new
+    
+    sumall = ((x6theta(:,1)'.*prod(dtheta,1)) + (x6theta(:,2)'.*prod(dtheta,1)) + (x6theta(:,3)'.*prod(dtheta,1)) + (x6theta(:,4)'.*prod(dtheta,1)));
+    sumpk = sum(N_cj_new .* sumall);
+    pk1 = sum(N_cj_new .*((x6theta(:,1)'.*prod(dtheta,1))))/sumpk;
+    pk2 = sum(N_cj_new .*((x6theta(:,2)'.*prod(dtheta,1))))/sumpk;
+    pk3 = sum(N_cj_new .*((x6theta(:,3)'.*prod(dtheta,1))))/sumpk;
+    pk4 = sum(N_cj_new .*((x6theta(:,4)'.*prod(dtheta,1))))/sumpk;
+    p = [pk1,pk2,pk3,pk4];
+    ps = [ps; p];
     x6 = find(p == max(p(:)));
     x6s = [x6s, x6];
 end
 
 %%
-crosstab(x6s', test_data(:,6))
+crosstab(x6s, test_data(:,6))
