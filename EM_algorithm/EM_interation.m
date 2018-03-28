@@ -37,7 +37,8 @@ for l = 1:size(tr_data,1)
            c4_theta_xid1 = [c4_theta_xid1,1];       
        
        end
-    end    
+     end
+    c_theta_xid1 = [c1_theta_xid1; c2_theta_xid1; c3_theta_xid1; c4_theta_xid1];
     % Ej
     all_cj = [p_y(1)*prod(c1_theta_xid1), p_y(2)*prod(c2_theta_xid1), p_y(3)*prod(c3_theta_xid1), p_y(1)*prod(c4_theta_xid1)];
     sump_cj = sum(all_cj);
@@ -51,18 +52,20 @@ for l = 1:size(tr_data,1)
     
     %second half
     for d_xi = 1:size(d1,2) %d_xi = 1,2,3,4,5,6 as index of x dimension
-        %E_ijk{d_xi} = cat(3, []);%,zeros(N, 4),zeros(N, 4),zeros(N, 4),zeros(N, 4),zeros(N, 4)); %{xi} = [ndata*nclass for k=1],[k=2],[c3],[c4]
-        %e_ijk_dxi = [];
         k_xi = d1(1, d_xi); %k_xi = d1(1), d1(2), d1(3), d1(4), d1(5), d1(6)
         for ki_xi = 1:k_max(d_xi) %loop over values x can take
-            ks = 1:k_max(d_xi);
             if k_xi == ki_xi
                 e_ijk = p_cj_dthata;
                 E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
-            elseif k_xi == 0   
-                p_k_cd = sum((p_xk{d_xi}(ki_xi))*(all_cj))/(sum(p_xk{d_xi}*(sump_cj)));
+            elseif k_xi == 0 %x_dxi = ki_xi  
+                rest = 1:k_max(d_xi);
+                rest(ki_xi) = [];
+                p_k_cdA = p_y.* c_theta_xid1(:, ki_xi)' .* prod(c_theta_xid1(:, rest),2)';
+                p_k_cdB = 
+                %p_k_cd = (p_xk{d_xi}(ki_xi))*(all_cj)./((sum(p_xk{d_xi}))*(all_cj));
+                %p_k_cd = sum((p_xk{d_xi}(ki_xi))*(all_cj))/(sum(p_xk{d_xi}*(sump_cj)));
                 %p_k_cd = (p_xk{d_xi}(ki_xi))*(sump_cj)/(sum(p_xk{d_xi}*(sump_cj)));
-                e_ijk = p_cj_dthata*p_k_cd;
+                e_ijk = p_cj_dthata.*p_k_cd;
                 E_ijk{d_xi}(l,:,ki_xi) = e_ijk;
             else
                 e_ijk = [0, 0, 0, 0];

@@ -151,8 +151,8 @@ thetas1 = [];
 [ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
 ite = 200;
 
-%while ite > 1
-while delta >= 0.001 
+while ite > 1
+%while delta >= 0.01 
     %[ N_cj_new, N_cjik_new, Q_theta0 ] = EM_interation( p_xk, p_y, theta_xi, tr_data );
     ite = ite - 1;
     p_y =  N_cj_new
