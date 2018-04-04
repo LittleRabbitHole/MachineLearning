@@ -131,7 +131,7 @@ AUC_scores = [];
 for i = 1:70
     x = data(:,i);
     y = data(:, 71);
-    [X,Y,T,AUC] = perfcurve(y,x,0);
+    AUC = AUC_score( x, y );
     AUC_scores(i) = AUC;
 end
 
