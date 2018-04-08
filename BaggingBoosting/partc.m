@@ -1,34 +1,17 @@
-%% load data
-load hw10_test.txt
-load hw10_train.txt
-tr_x = hw10_train(:, 1:65);
-tr_y = hw10_train(:, 66);
-test_x = hw10_test(:, 1:65);
-test_y = hw10_test(:, 66);
+%% base DT model
+[test_y_head]  = DT_base_simple(tr_x, tr_y, test_x);
+[tr_y_head]  = DT_base_simple(tr_x, tr_y, tr_x);
 
-%% base SVM model
-[test_y_head]  = SVML_base(tr_x, tr_y, test_x);
-[tr_y_head]  = SVML_base(tr_x, tr_y, tr_x);
+%% base model error
+%train
+conf_mat_train = confusionmat(tr_y, tr_y_head,'order',[1,0]);
+accuracy_train = (conf_mat_train(1,1)+conf_mat_train(2,2))/sum(sum(conf_mat_train));
+misclass_train = 1-accuracy_train
 
-%% errors on base model - training confusion matrix
-conf_mat_train = confusionmat(tr_y,double(tr_y_head),'order',[1,0]);
-
-TP = conf_mat_train(1,1);
-TN = conf_mat_train(2,2);
-FN = conf_mat_train(2,1);
-FP = conf_mat_train(1,2);
-accuracy_train = (TP+TN)/sum(sum(conf_mat_train));
-misclass_train = 1-accuracy_train;
-
-%% errors on base model - test confusion matrix
-conf_mat_test = confusionmat(test_y,double(test_y_head),'order',[1,0]);
-
-TP = conf_mat_test(1,1);
-TN = conf_mat_test(2,2);
-FN = conf_mat_test(2,1);
-FP = conf_mat_test(1,2);
-accuracy_test = (TP+TN)/sum(sum(conf_mat_test));
-misclass_test = 1-accuracy_test;
+%test
+conf_mat_test = confusionmat(test_y, test_y_head,'order',[1,0]);
+accuracy_test = (conf_mat_test(1,1)+conf_mat_test(2,2))/sum(sum(conf_mat_test));
+misclass_test = 1-accuracy_test
 
 %% bagging or boosting
 
@@ -39,7 +22,7 @@ for T = 1:10
     %for train 20 times and get the average error
     misclass_train_all = 0; misclass_test_all = 0;
     
-    para = sprintf('[@SVML_base,%d,[]]',T);
+    para = sprintf('[@DT_base_simple,%d,[]]',T);
     for i = 1:20
         %for bagging
         %[test_y_head] = Bag_classifier(tr_x,tr_y,test_x,para);

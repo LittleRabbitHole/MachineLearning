@@ -34,7 +34,7 @@ view(tree);
 view(tree,'Mode','graph');
 
 %% default tree performance on training set
-ytrain_pred=predict(tree,x);
+ytrain_pred=predict(tree, x);
 error_train = sum(abs(ytrain_pred - y))/size(y,1)
 
 %% Predicts the label on the test set
